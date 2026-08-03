@@ -507,7 +507,27 @@ h6,
     color: #FFFFFF;
     background: var(--primary);
 }
+.team-item img {
+    width: 180px;
+    height: 180px;
+    object-fit: cover; /* Image crop hoke circle me fit hogi */
+    border-radius: 50%;
+}
 
+.team-img{
+    width:180px;
+    height:180px;
+    border-radius:50%;
+    object-fit:cover;
+    object-position:center top;
+}
+.team-item img{
+    width:200px;
+    height:220px;
+    border-radius:60%;
+    object-fit:cover;
+    object-position:center 30%;
+}
 
 /*** Footer ***/
 .footer {
