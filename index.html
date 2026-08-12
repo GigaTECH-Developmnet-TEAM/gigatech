@@ -107,7 +107,7 @@
   }
   .nav{display:flex;align-items:center;justify-content:space-between;padding:6px 0;}
   .brand{display:flex;align-items:center;gap:10px;}
-  .brand img{height:72px;width:auto;}
+  .brand img{height:54px;width:auto;}
   .navlinks{display:flex;align-items:center;gap:36px;}
   .navlinks a{
     font-family:'Manrope',sans-serif;font-weight:600;font-size:14.5px;color:var(--navy);
@@ -372,6 +372,11 @@
 .ai-body{padding:16px 18px;max-height:320px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
 .ai-msg{font-family:'Inter',sans-serif;font-size:13.5px;line-height:1.55;max-width:88%;padding:10px 13px;border-radius:12px;}
 .ai-msg.bot{background:var(--off-white);color:var(--charcoal);border-bottom-left-radius:4px;align-self:flex-start;}
+.ai-typing{display:flex;gap:4px;align-items:center;padding:4px 2px;}
+.ai-typing span{width:6px;height:6px;border-radius:50%;background:var(--gray);display:inline-block;animation:ai-bounce 1.2s infinite ease-in-out;}
+.ai-typing span:nth-child(2){animation-delay:0.15s;}
+.ai-typing span:nth-child(3){animation-delay:0.3s;}
+@keyframes ai-bounce{0%,60%,100%{transform:translateY(0);opacity:.5;}30%{transform:translateY(-4px);opacity:1;}}
 .ai-msg.user{background:var(--royal);color:#fff;border-bottom-right-radius:4px;align-self:flex-end;}
 .ai-quick{display:flex;flex-wrap:wrap;gap:8px;padding:0 18px 16px;}
 .ai-chip{
@@ -386,10 +391,14 @@
 }
 .ai-foot input:focus{outline:none;border-color:var(--royal);}
 .ai-foot button{
-  background:var(--royal);border:none;color:#fff;width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;
+  background:linear-gradient(135deg,var(--royal),var(--purple));border:none;color:#fff;
+  padding:0 18px;height:38px;border-radius:999px;
+  display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;flex-shrink:0;
+  font-family:'Manrope',sans-serif;font-weight:700;font-size:13px;
+  transition:transform .15s ease, box-shadow .15s ease;
 }
-.ai-foot button svg{width:16px;height:16px;}
+.ai-foot button:hover{transform:translateY(-1px);box-shadow:0 8px 18px -8px rgba(42,75,224,0.5);}
+.ai-foot button svg{width:15px;height:15px;}
 @media(max-width:480px){
   .float-stack{right:14px;bottom:14px;}
   .ai-panel{right:14px;left:14px;width:auto;bottom:90px;}
@@ -652,6 +661,20 @@
 .light-form input:focus, .light-form select:focus, .light-form textarea:focus{
   box-shadow:0 0 0 3px rgba(42,75,224,0.12);
 }
+
+/* ================= Pro Requirements Field ================= */
+.req-label-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.req-label-row label{margin-bottom:0;}
+.req-counter{font-family:'Manrope',sans-serif;font-size:11.5px;font-weight:600;color:var(--gray);}
+.req-counter.warn{color:var(--orange);}
+.req-hints{display:flex;flex-wrap:wrap;gap:7px;margin:9px 0 12px;}
+.req-hint{
+  font-family:'Manrope',sans-serif;font-size:11.5px;font-weight:600;color:var(--royal);
+  background:rgba(42,75,224,0.07);border:1px solid rgba(42,75,224,0.16);
+  padding:5px 10px;border-radius:7px;
+}
+.req-wrap{position:relative;}
+.req-wrap textarea{padding-bottom:14px;}
 
 </style>
 </head>
@@ -1249,7 +1272,21 @@
           </div>
         </div>
         <div class="form-row"><div class="full"><label for="ftimeline">Timeline</label><input id="ftimeline" type="text" placeholder="e.g. 2–3 months"></div></div>
-        <div class="form-row"><div class="full"><label for="freq">Requirements</label><textarea id="freq" rows="6" placeholder="Briefly describe what you're planning to build — features, target users, and any specific technology preferences."></textarea></div></div>
+        <div class="form-row"><div class="full">
+          <div class="req-label-row">
+            <label for="freq"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:4px;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5.586a1 1 0 0 1 .707.293l5.414 5.414a1 1 0 0 1 .293.707V19a2 2 0 0 1-2 2Z"/></svg>Project Requirements</label>
+            <span class="req-counter" id="reqCounter">0 / 800</span>
+          </div>
+          <div class="req-wrap">
+            <textarea id="freq" rows="6" maxlength="800" placeholder="Describe what you're planning to build — key features, target users, must-have integrations and any technology preferences."></textarea>
+          </div>
+          <div class="req-hints">
+            <span class="req-hint">✓ Key features</span>
+            <span class="req-hint">✓ Target users</span>
+            <span class="req-hint">✓ Integrations</span>
+            <span class="req-hint">✓ Tech preferences</span>
+          </div>
+        </div></div>
         <button type="submit" class="btn btn-primary form-submit">Send via WhatsApp</button>
         <div class="form-trust">
           <span class="form-trust-item"><svg fill="none" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>Reply within 24 hrs</span>
@@ -1320,15 +1357,15 @@
     <div class="ai-msg bot">Hi! I'm the GigaTECH AI Assistant. Ask me about our services, pricing approach, timelines, or how to get in touch.</div>
   </div>
   <div class="ai-quick">
+    <span class="ai-chip" data-q="idea">Project Ideas</span>
     <span class="ai-chip" data-q="services">Our Services</span>
     <span class="ai-chip" data-q="pricing">Pricing</span>
     <span class="ai-chip" data-q="team">Our Team</span>
-    <span class="ai-chip" data-q="projects">Projects</span>
     <span class="ai-chip" data-q="contact">Contact Info</span>
   </div>
   <div class="ai-foot">
     <input type="text" id="aiInput" placeholder="Type your question...">
-    <button id="aiSend" aria-label="Send"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.126A59.77 59.77 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.874L5.999 12Zm0 0h7.5"/></svg></button>
+    <button id="aiSend" aria-label="Send">Send<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.126A59.77 59.77 0 0 1 21.485 12 59.77 59.77 0 0 1 3.27 20.874L5.999 12Zm0 0h7.5"/></svg></button>
   </div>
 </div>
 
@@ -1387,7 +1424,17 @@ Source: GigaTECH Website`;
   });
 }
 wireLeadForm('leadForm');
-wireLeadForm('contactForm');
+
+// ---------- requirements character counter ----------
+const reqField = document.getElementById('freq');
+const reqCounter = document.getElementById('reqCounter');
+if(reqField && reqCounter){
+  reqField.addEventListener('input', ()=>{
+    const len = reqField.value.length;
+    reqCounter.textContent = len + ' / 800';
+    reqCounter.classList.toggle('warn', len > 700);
+  });
+}
 
 // ---------- project filter chips ----------
 document.querySelectorAll('.filter-chip').forEach(chip=>{
@@ -1440,8 +1487,148 @@ const AI_ANSWERS = {
   "process": "Our process follows six steps: Discover (understand your business), Plan (scope & architecture), Design (Figma prototyping), Build (development with updates), Launch (testing & deployment) and Support (long-term maintenance).",
   "why": "We're not just a software vendor — we're a technology partner. We focus on business understanding first, scalable architecture, AI & automation built in, and long-term partnership rather than one-off delivery.",
   "projects": "We've delivered projects like business customer portals, on-demand delivery apps, AI chatbots for customer support, hospital management systems, multi-vendor marketplaces and school management platforms. Check the Projects section for more.",
-  "default": "I can help with questions about our services, pricing, timelines, the team, our founder, our process, past projects, or how to get in touch. You can also chat directly with our team on WhatsApp for a detailed answer."
+  "default": "Tell me what you're planning to build — e.g. 'e-commerce app', 'CRM for my business', 'food delivery app', 'school management system' — and I'll suggest the core features and ideas for it. You can also ask about our services, pricing, team or how to get in touch."
 };
+
+// ---------- Hindi answers ----------
+const AI_ANSWERS_HI = {
+  "services": "Hum banate hain: Web Development (websites, web apps, SaaS, portals, dashboards), Mobile Apps (Android, iOS, Flutter), Custom Software (CRM, ERP, HRMS, billing, hospital/school management), AI & Machine Learning (chatbots, AI agents), IoT, E-Commerce (stores aur multi-vendor marketplaces), UI/UX Design, Digital Marketing aur Business Automation. Aapko kaunsa chahiye?",
+  "pricing": "Project ki cost scope, features aur timeline pe depend karti hai. WhatsApp pe apni requirements share karo, hamari team aapko clear, transparent quote bhejegi — koi fixed package ya hidden cost nahi.",
+  "timeline": "Zyadatar projects 4–12 weeks me complete hote hain, complexity ke hisaab se. Requirements samajhne ke baad exact timeline bata denge.",
+  "contact": "Aap GigaTECH DEVELOPMENT se +91 7233023547 (call ya WhatsApp) pe, is website ke contact form se, ya Instagram @gigatech.net.in pe contact kar sakte ho. Office New Delhi, Jahangirpuri me hai.",
+  "about": "GigaTECH DEVELOPMENT ek technology aur software development company hai jo startups, MSMEs aur enterprises ko unke ideas ko scalable digital products me badalne me madad karti hai. Hamara promise: 'Hum sirf software nahi banate, hum aisi technology banate hain jo real business problems solve kare.'",
+  "founder": "GigaTECH DEVELOPMENT ke founder Karan Gautam hain. Unka vision hai ki business jinpe trust kar sake, aisa technology partner banna jo ideas ko real, scalable digital products me badle.",
+  "team": "Hamari team me hain Karan Gautam (Founder), Sonu Singh (Full-Stack Web Developer), Ankur Shakya (Software QA Engineer), Vivek Sharma (Application Developer) aur Dhanjay Kumar (Backend Engineer, Java, 5+ saal ka experience).",
+  "experience": "GigaTECH DEVELOPMENT ke paas 7+ saal ka technology experience hai aur humne 100+ projects deliver kiye hain — education, healthcare, retail, e-commerce, finance jaise industries me.",
+  "process": "Hamara process 6 steps me hota hai: Discover (business samajhna), Plan (scope & architecture), Design (Figma prototyping), Build (development), Launch (testing & deployment) aur Support (long-term maintenance).",
+  "why": "Hum sirf software vendor nahi, technology partner hain. Business understanding pehle, scalable architecture, AI & automation, aur long-term partnership — yehi hamara focus hai.",
+  "projects": "Humne banaye hain business customer portals, on-demand delivery apps, AI chatbots, hospital management systems, multi-vendor marketplaces aur school management platforms. Projects section me aur dekho.",
+  "default": "Batao aap kya banana chahte ho — jaise 'e-commerce app', 'apne business ke liye CRM', 'food delivery app', 'school management system' — main uske core features aur ideas bata dunga. Services, pricing, team ya contact ke baare me bhi pooch sakte ho."
+};
+
+const AI_GREETINGS_HI = ["Namaste! 👋 Main aapki kaise madad kar sakta hu?", "Hey! Kaise ho? Kya jaanna chahte ho?", "Hello ji! Services, project idea, ya kuch tech-related pooch sakte ho."];
+const AI_THANKS_HI = ["Koi baat nahi! Aur kuch jaanna hai?", "Khushi hui madad karke! Aur poochna ho to batao.", "Anytime! Kuch aur poochna ho to bata dena."];
+const AI_BYE_HI = ["Theek hai, milte hain! Project start karna ho to WhatsApp pe message kar dena.", "Bye! Jab bhi zaroorat ho, WhatsApp pe hum hain."];
+const AI_HOWAREYOU_HI = ["Main bilkul theek hu, dhanyawad! Aap apne project ke baare me batao.", "Sab badhiya! Aap kya bana rahe ho?"];
+
+// ---------- Project idea / feature knowledge base ----------
+const PROJECT_IDEAS = [
+  { keys:["e-commerce","ecommerce","online store","online shop"],
+    title:"E-Commerce Store",
+    text:"For an E-Commerce Store, core features usually include: product catalog with categories & filters, cart & wishlist, secure checkout with multiple payment options (UPI/cards/COD), order tracking, user accounts & order history, reviews & ratings, coupons/discounts, admin dashboard for inventory & orders, and push/email/WhatsApp order notifications. Nice-to-have ideas: AI product recommendations, abandoned-cart reminders, and a loyalty/rewards program." },
+  { keys:["marketplace","multi-vendor","multivendor"],
+    title:"Multi-Vendor Marketplace",
+    text:"A Multi-Vendor Marketplace typically needs: vendor onboarding & KYC, individual vendor storefronts, commission-based payouts, centralized order & inventory management, vendor dashboards, dispute/return handling, ratings for vendors and buyers, and admin controls for approvals. Ideas: vendor performance analytics and tiered commission plans." },
+  { keys:["delivery app","food delivery","on-demand delivery","courier app"],
+    title:"Delivery / Food Delivery App",
+    text:"A Delivery App usually has 3 apps: Customer app (browse, order, live tracking, payments), Delivery Partner app (accept orders, navigation, earnings), and Admin panel (order assignment, zones, partner management). Core features: real-time GPS tracking, ratings, order history, multiple payment options, and push notifications. Ideas: scheduled deliveries and AI-based delivery-partner assignment for faster dispatch." },
+  { keys:["booking app","appointment","reservation app","salon app","clinic booking"],
+    title:"Booking / Appointment App",
+    text:"A Booking App typically includes: service/slot calendar, real-time availability, online payments/deposits, automated reminders (SMS/WhatsApp), customer profiles & history, staff/resource management, and an admin dashboard for scheduling. Ideas: waitlist management and recurring-appointment support." },
+  { keys:["crm"],
+    title:"CRM (Customer Relationship Management)",
+    text:"A CRM usually covers: lead & contact management, sales pipeline/stages, task & follow-up reminders, email/WhatsApp integration, reporting & analytics dashboards, role-based access, and activity logs. Ideas: AI lead scoring and automated follow-up sequences." },
+  { keys:["erp"],
+    title:"ERP (Enterprise Resource Planning)",
+    text:"An ERP typically integrates: inventory & procurement, finance & accounting, HR & payroll, sales & order management, and reporting dashboards — all sharing one central database. Ideas: role-based approval workflows and real-time analytics across departments." },
+  { keys:["hrms","hr management","payroll"],
+    title:"HRMS (HR Management System)",
+    text:"An HRMS usually includes: employee records, attendance & leave management, payroll processing, performance reviews, recruitment/onboarding workflows, and a self-service employee portal. Ideas: biometric/geo attendance and automated payslip generation." },
+  { keys:["hospital","clinic management","healthcare app","patient management"],
+    title:"Hospital / Clinic Management System",
+    text:"A Hospital Management System typically covers: patient records (EMR), appointment scheduling, doctor & department management, billing & insurance, pharmacy/inventory, and lab report management. Ideas: a patient mobile app for reports and appointment booking." },
+  { keys:["school management","college management","education platform","lms","e-learning","elearning"],
+    title:"School Management / Learning Platform",
+    text:"A School/LMS platform usually needs: student & staff records, attendance, fee management, timetable & exam/grade tracking, a parent portal, and (for e-learning) course content, quizzes and progress tracking. Ideas: a parent mobile app and automated fee-reminder notifications." },
+  { keys:["real estate","property app","property listing"],
+    title:"Real Estate / Property Platform",
+    text:"A Real Estate platform typically includes: property listings with photos/maps, advanced search & filters, agent/owner profiles, inquiry & scheduling forms, favorites/saved searches, and an admin panel for listing approvals. Ideas: EMI calculators and virtual-tour integration." },
+  { keys:["social media","social network","community app"],
+    title:"Social Media / Community App",
+    text:"A Social/Community app usually needs: user profiles, posts/feed with likes & comments, follow/friend system, real-time chat, notifications, content moderation tools, and an admin panel. Ideas: stories/short-video format and interest-based groups." },
+  { keys:["fintech","payment app","wallet app","banking app"],
+    title:"Fintech / Payment App",
+    text:"A Fintech app typically covers: KYC/onboarding, secure wallet or account management, payment gateway integration (UPI/cards), transaction history, fraud/security checks, and admin/compliance dashboards. Ideas: spend analytics and recurring-payment/subscription support. Note: fintech projects need extra focus on security and regulatory compliance." },
+  { keys:["job portal","recruitment platform","hiring platform"],
+    title:"Job Portal",
+    text:"A Job Portal usually includes: job listings with search & filters, employer & candidate profiles, resume upload/builder, application tracking, messaging between employers and candidates, and an admin panel. Ideas: AI-based job-candidate matching." },
+  { keys:["chat app","messaging app","chat application"],
+    title:"Chat / Messaging App",
+    text:"A Chat App typically needs: real-time 1:1 and group messaging, media sharing, push notifications, read receipts/online status, and end-to-end encryption for privacy. Ideas: voice/video calling and disappearing messages." },
+  { keys:["ai chatbot","chatbot project","ai assistant project"],
+    title:"AI Chatbot",
+    text:"An AI Chatbot project usually covers: intent recognition (NLP), a knowledge base/FAQ engine, integration with WhatsApp/website/app, handoff to a human agent for complex queries, and an analytics dashboard for common questions. Ideas: multilingual support and voice-based interaction." },
+  { keys:["inventory","warehouse management","stock management"],
+    title:"Inventory / Warehouse Management",
+    text:"An Inventory System typically includes: stock tracking across locations, purchase & sales orders, barcode/QR scanning, low-stock alerts, supplier management, and reporting dashboards. Ideas: demand forecasting and automated reorder triggers." },
+  { keys:["logistics","fleet management","transportation app"],
+    title:"Logistics / Fleet Management",
+    text:"A Logistics platform usually needs: fleet & driver management, live GPS tracking, route optimization, trip scheduling, fuel/maintenance logs, and a client-facing tracking portal. Ideas: automated route optimization and predictive maintenance alerts." },
+  { keys:["portfolio website","business website","corporate website"],
+    title:"Business / Corporate Website",
+    text:"A Business Website typically includes: home, about, services, portfolio/case studies, testimonials, a contact/lead form, blog/SEO pages, and WhatsApp click-to-chat. Ideas: an AI chat assistant (like this one!) and a client-facing project-status portal." },
+  { keys:["iot","smart device","sensor dashboard"],
+    title:"IoT Solution",
+    text:"An IoT project typically involves: device/sensor integration, a real-time monitoring dashboard, alerts & thresholds, historical data logging, and remote device control. Ideas: predictive maintenance using sensor-data trends." }
+];
+
+function findProjectIdea(q){
+  for(const item of PROJECT_IDEAS){
+    if(item.keys.some(k=>q.includes(k))) return item;
+  }
+  return null;
+}
+
+// ---------- General technology knowledge base ----------
+const TECH_KNOWLEDGE = [
+  { keys:["react.js","react js"," react ","reactjs"],
+    text:"React.js is a JavaScript library for building fast, interactive user interfaces using reusable components. We use it for modern web apps and dashboards — it's fast, SEO-friendly with the right setup, and has a huge ecosystem." },
+  { keys:["node.js","node js","nodejs"],
+    text:"Node.js is a JavaScript runtime that lets us build fast, scalable backend servers and APIs using JavaScript — great for real-time apps like chat and live tracking." },
+  { keys:["flutter"],
+    text:"Flutter is Google's framework for building Android and iOS apps from a single codebase, with near-native performance and a polished UI. It's ideal for startups who want to launch on both platforms quickly and affordably." },
+  { keys:["react native"],
+    text:"React Native lets us build cross-platform mobile apps (Android + iOS) using JavaScript/React, sharing most of the code between platforms — faster and more cost-effective than building two separate native apps." },
+  { keys:["native android","native ios","kotlin","swift"],
+    text:"Native development (Kotlin for Android, Swift for iOS) gives the best possible performance and full access to platform features, but requires separate codebases for each platform — best for apps with heavy graphics, AR, or platform-specific needs." },
+  { keys:[".net","dotnet","c#"],
+    text:".NET (C#) is Microsoft's framework for building robust enterprise backend systems, APIs and Windows applications — a strong choice for enterprise software and systems integrating with Microsoft tools." },
+  { keys:["java","spring boot"],
+    text:"Java with Spring Boot is a proven, highly scalable choice for enterprise backend systems, banking-grade applications and large APIs — known for reliability and strong security features." },
+  { keys:["python"],
+    text:"Python is widely used for backend development, data analysis, automation and especially AI/Machine Learning — its rich libraries (TensorFlow, PyTorch, scikit-learn) make it the go-to language for AI projects." },
+  { keys:["mongodb","nosql"],
+    text:"MongoDB is a NoSQL database that stores flexible, JSON-like data — great for apps where the data structure changes often, like content platforms and fast-moving startups." },
+  { keys:["mysql","postgresql","postgres","sql database"],
+    text:"MySQL and PostgreSQL are relational (SQL) databases — ideal when your data is highly structured with clear relationships, like e-commerce orders, financial records or CRM/ERP systems." },
+  { keys:["aws","azure","google cloud","gcp","cloud hosting"],
+    text:"We deploy applications on cloud platforms like AWS, Azure or Google Cloud — giving you scalability, reliability and pay-as-you-grow hosting instead of managing your own servers." },
+  { keys:["api","rest api","integration"],
+    text:"An API (Application Programming Interface) lets different software systems talk to each other — for example, connecting your app to a payment gateway, WhatsApp, or a third-party service. We build and integrate REST APIs as a core part of most projects." },
+  { keys:["machine learning","artificial intelligence"," ai ","nlp","computer vision"],
+    text:"AI/Machine Learning lets software learn from data to make predictions or automate decisions — think chatbots (NLP), recommendation engines, image recognition (computer vision), or fraud detection. We integrate practical AI where it adds real business value, not just as a buzzword." },
+  { keys:["devops","ci/cd","deployment pipeline"],
+    text:"DevOps practices (CI/CD pipelines, automated testing & deployment) help us ship updates faster and more reliably, with less downtime — important for apps that need frequent updates." },
+  { keys:["security","data security","encryption"],
+    text:"We follow security-conscious development: encrypted data storage, secure authentication, HTTPS, and protection against common vulnerabilities (SQL injection, XSS) — especially critical for fintech, healthcare and e-commerce projects." },
+  { keys:["pwa","progressive web app"],
+    text:"A Progressive Web App (PWA) is a website that behaves like a mobile app — installable, works offline, and sends push notifications — without needing a separate app-store app. A good lower-cost alternative to a native app for many businesses." },
+  { keys:["saas","software as a service"],
+    text:"SaaS (Software as a Service) means delivering software over the internet on a subscription basis, usually with multiple customers (tenants) using the same platform. We build multi-tenant SaaS platforms with subscription billing built in." },
+  { keys:["figma","design system","prototyping"],
+    text:"We use Figma for UI/UX design and prototyping — creating clickable prototypes and design systems (reusable components, colors, typography) before development starts, so you can review the look and feel early." }
+];
+
+function findTechKnowledge(q){
+  for(const item of TECH_KNOWLEDGE){
+    if(item.keys.some(k=>q.includes(k))) return item;
+  }
+  return null;
+}
+
+function genericProjectFramework(q){
+  return "That sounds like an interesting project! While I don't have a ready template for that exact type, here's a solid feature framework to start with: user authentication & profiles, a core workflow specific to your use-case, an admin dashboard for management, notifications (email/SMS/WhatsApp), payment integration (if applicable), search & filters, analytics/reporting, and a mobile-friendly or app interface. Share more detail on WhatsApp and our team will map out the exact features, tech stack and timeline for you.";
+}
 
 function aiAddMsg(text, who){
   const div = document.createElement('div');
@@ -1451,21 +1638,85 @@ function aiAddMsg(text, who){
   aiBody.scrollTop = aiBody.scrollHeight;
 }
 
+function aiShowTyping(){
+  const div = document.createElement('div');
+  div.className = 'ai-msg bot ai-typing-wrap';
+  div.innerHTML = '<span class="ai-typing"><span></span><span></span><span></span></span>';
+  aiBody.appendChild(div);
+  aiBody.scrollTop = aiBody.scrollHeight;
+  return div;
+}
+
+function aiSendBot(text, delayMs){
+  const typingEl = aiShowTyping();
+  const delay = delayMs || (600 + Math.random()*500);
+  setTimeout(()=>{
+    typingEl.remove();
+    aiAddMsg(text, 'bot');
+  }, delay);
+}
+
+const AI_GREETINGS = ["Hey there! 👋 How can I help you today?", "Hi! Good to see you here. What can I help with?", "Hello! I'm happy to help — ask me about our services, a project idea, or anything tech-related."];
+const AI_THANKS = ["You're welcome! Anything else you'd like to know?", "Happy to help! Let me know if you have more questions.", "Anytime! Feel free to ask anything else."];
+const AI_BYE = ["Take care! Reach out on WhatsApp anytime if you're ready to start your project.", "Bye for now! We're just a message away on WhatsApp whenever you need us."];
+const AI_HOWAREYOU = ["I'm doing great, thanks for asking! How can I help with your project today?", "All good here! What are you working on?"];
+
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+// ---------- language detection (Hindi/Hinglish vs English) ----------
+const HINGLISH_WORDS = ["kya","kaise","kaisa","kitna","kitne","hai","hain","ho","kro","karo","chahiye","mujhe","aap","tum","tumhe","batao","kro","chahiy","bhai","paisa","kimat","kimmat","namaste","dhanyawad","shukriya","achha","theek","nahi","nahin","haan"];
+function isHindiQuery(q){
+  if(/[\u0900-\u097F]/.test(q)) return true; // Devanagari script
+  const words = q.split(/\s+/);
+  const hits = words.filter(w=>HINGLISH_WORDS.includes(w.replace(/[^a-z]/g,''))).length;
+  return hits >= 1 && words.length <= 12;
+}
+
 function aiRespond(query){
-  const q = query.toLowerCase();
-  let answer = AI_ANSWERS.default;
-  if(/founder|karan|ceo|owner/.test(q)) answer = AI_ANSWERS.founder;
-  else if(/team|developer|engineer|employee|staff|who work/.test(q)) answer = AI_ANSWERS.team;
-  else if(/experience|years|how long.*(company|business|around)|100\+|projects delivered/.test(q)) answer = AI_ANSWERS.experience;
-  else if(/process|how.*work|step|workflow|methodology/.test(q)) answer = AI_ANSWERS.process;
-  else if(/why.*(gigatech|you|choose|different)|differentiat|advantage/.test(q)) answer = AI_ANSWERS.why;
-  else if(/project|portfolio|work.*(done|example)|case stud/.test(q)) answer = AI_ANSWERS.projects;
-  else if(/about|company|who are you|what is gigatech|vision|mission/.test(q)) answer = AI_ANSWERS.about;
-  else if(/service|offer|build|develop/.test(q)) answer = AI_ANSWERS.services;
-  else if(/price|cost|budget|quote/.test(q)) answer = AI_ANSWERS.pricing;
-  else if(/time|long|duration|when/.test(q)) answer = AI_ANSWERS.timeline;
-  else if(/contact|phone|number|email|reach|whatsapp|address|location|office|instagram/.test(q)) answer = AI_ANSWERS.contact;
-  setTimeout(()=> aiAddMsg(answer, 'bot'), 450);
+  const q = query.toLowerCase().trim();
+  const hindi = isHindiQuery(q);
+  const A = hindi ? AI_ANSWERS_HI : AI_ANSWERS;
+
+  // small talk first
+  if(/^(hi|hii|hiii|hey|hello|yo|hola|namaste|namaskar)\b/.test(q)){ aiSendBot(pick(hindi ? AI_GREETINGS_HI : AI_GREETINGS)); return; }
+  if(/how are you|kaise ho|kese ho|kaise ho/.test(q)){ aiSendBot(pick(hindi ? AI_HOWAREYOU_HI : AI_HOWAREYOU)); return; }
+  if(/thank|thanks|thankyou|shukriya|dhanyawad/.test(q)){ aiSendBot(pick(hindi ? AI_THANKS_HI : AI_THANKS)); return; }
+  if(/^(bye|goodbye|see ya|see you|tata|alvida)\b/.test(q)){ aiSendBot(pick(hindi ? AI_BYE_HI : AI_BYE)); return; }
+
+  let answer = A.default;
+  let followUp = "";
+
+  if(q === 'idea'){
+    aiSendBot(hindi
+      ? "Bilkul! Batao kis type ka project hai — jaise 'e-commerce app', 'CRM', 'food delivery app', 'school management system' — main uske features aur ideas bata dunga."
+      : "Sure! Tell me the type of project — e.g. 'e-commerce app', 'CRM', 'food delivery app', 'school management system', 'booking app', 'fintech app' — and I'll list the core features and ideas for it.");
+    return;
+  }
+
+  const idea = findProjectIdea(q);
+  const tech = findTechKnowledge(q);
+
+  if(idea){
+    answer = (hindi ? "(Yeh detail English mein hai, taaki koi galat jaankari na jaaye) " : "") + idea.text;
+    followUp = hindi ? " Tech stack suggest karu, ya WhatsApp pe hamari team se connect kara du?" : " Want me to suggest a rough tech stack for this, or shall I connect you with our team on WhatsApp?";
+  }
+  else if(tech){
+    answer = (hindi ? "(English mein detail) " : "") + tech.text;
+  }
+  else if(/founder|karan|ceo|owner/.test(q)) answer = A.founder;
+  else if(/team|developer|engineer|employee|staff|who work/.test(q)) answer = A.team;
+  else if(/experience|years|how long.*(company|business|around)|100\+|projects delivered/.test(q)) answer = A.experience;
+  else if(/process|how.*work|step|workflow|methodology/.test(q)) answer = A.process;
+  else if(/why.*(gigatech|you|choose|different)|differentiat|advantage/.test(q)) answer = A.why;
+  else if(/project|portfolio|work.*(done|example)|case stud/.test(q)) answer = A.projects;
+  else if(/about|company|who are you|what is gigatech|vision|mission/.test(q)) answer = A.about;
+  else if(/service|offer|build|develop/.test(q)) answer = A.services;
+  else if(/price|cost|budget|quote/.test(q)) answer = A.pricing;
+  else if(/time|long|duration|when/.test(q)) answer = A.timeline;
+  else if(/contact|phone|number|email|reach|whatsapp|address|location|office|instagram/.test(q)) answer = A.contact;
+  else if(/app|website|platform|system|software|project|idea|feature/.test(q)) answer = genericProjectFramework(q);
+
+  aiSendBot(answer + followUp);
 }
 
 if(fabAi){
